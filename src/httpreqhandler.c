@@ -24,7 +24,7 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 			else if(preg_match(buffer,"^PUT[ ](.+)$") == 0)
 				handlePutRequest(buffer);
 			else {
-				forgeHeader(HTTP_ERROR_NOT_IMPLEMENTED,sock);
+				forgeHeader(HTTP_ERROR_NOT_IMPLEMENTED,sock,10);
 				return HTTP_ERROR_NOT_IMPLEMENTED;
 			}
 			bzero(buffer,1024);
@@ -40,8 +40,17 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 }
 
 uint16_t handleGetRequest(char* req, cSocket* sock) {
-	forgeHeader(200,sock);
-	return 0;
+	char filename[256];
+	bzero(filename,256);
+	
+	FILE* file = fopen(filename,"r");
+	if(file == NULL) {
+		forgeHeader(HTTP_ERROR_NOT_FOUND,sock,0);
+		return HTTP_ERROR_NOT_FOUND;
+	}
+	
+	forgeHeader(HTTP_OK,sock,10);
+	return HTTP_OK;
 }
 
 int8_t handlePostRequest(char* req) {
@@ -54,35 +63,34 @@ int8_t handlePutRequest(char* req) {
 	return 0;
 }
 
-void forgeHeader(uint16_t code, cSocket* sock) {
+void forgeHeader(uint16_t code, cSocket* sock, size_t clength) {
 	char retcode[512];
 	bzero(retcode,512);
 	switch(code) {
 		case 200: {
 			char tmpstr[128];
 			bzero(tmpstr,128);
-			char tmpstr2[128];
-			bzero(tmpstr2,128);
 			strcpy(retcode,"HTTP/1.1 200 OK\n");
 			strcat(retcode,"Server: esgi-http-server\n");
 			strcat(retcode,"Connection: Keep-Alive\n");
-			
-			// @ TODO: change content
-			strcpy(tmpstr,"<h1>Hello world</h1><img src=\"/toto.jpg\"/>\n\0");
-			sprintf(tmpstr2, "Content-Length: %d\n", strlen(tmpstr));
-			
-			strcat(retcode,tmpstr2);
-			strcat(retcode,"\n");
+			sprintf(tmpstr,"Content-Length: %d\n", clength);
 			strcat(retcode,tmpstr);
+			strcat(retcode,"\n");
 			break;
 		}
 		case 401:
 			break;
-		case 404:
+		case 404: {
+			char tmpstr[128];
+			bzero(tmpstr,128);
 			strcpy(retcode,"HTTP/1.1 404 Not Found\n");
-			strcat(retcode,"Server: esgi-http-server\n\n");
+			strcat(retcode,"Server: esgi-http-server\n");
+			strcat(retcode,"Connection: Keep-Alive\n");
+			sprintf(tmpstr,"Content-Length: %d\n", strlen("<h1>Not found</h1>\n"));
+			strcat(retcode,"\n");
 			strcat(retcode,"<h1>Not found</h1>\n");
 			break;
+		}
 		case 500:
 			break;
 		case 501:
