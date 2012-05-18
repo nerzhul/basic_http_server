@@ -9,6 +9,7 @@ struct cSocket {
 	SOCKET csock;
     SOCKADDR_IN csin;
     socklen_t recsize;
+    char* http_reply;
 };
 
 void* clientHandler(void* data);

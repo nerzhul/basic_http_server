@@ -12,4 +12,5 @@ void printDebug(const char* str, ...);
 void printError(const char* str, ...);
 void setOutputColor(int color);
 void unsetOutputColor();
+int8_t preg_match(char* str, char* rgx);
 #endif

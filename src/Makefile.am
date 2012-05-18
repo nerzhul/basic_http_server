@@ -6,6 +6,8 @@ http_server_SOURCES = \
 	clientsocket.c \
 	clientsocket.h \
 	common.h \
+	httpreqhandler.c \
+	httpreqhandler.h \
 	main.c \
 	prthread.c \
 	prthread.h \

@@ -13,6 +13,7 @@ void createCliThread(SOCKET csock, SOCKADDR_IN csin, socklen_t recsize) {
 	sock->csock = csock;
 	sock->csin = csin;
 	sock->recsize = recsize;
+	sock->http_reply = NULL;
 	thr->sock = sock;
 	thr->next = NULL;
 	thr->thread = malloc(sizeof(pthread_t));

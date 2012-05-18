@@ -33,6 +33,7 @@ int8_t handleClients() {
 		SOCKADDR_IN csin;
 		socklen_t recsize = sizeof(csin);
 		csock = accept(ssock, (SOCKADDR*)&csin, &recsize);
+		printDebug("Accepting Client from %s:%d (sock %d)", inet_ntoa(csin.sin_addr), htons(csin.sin_port),csock);
 		createCliThread(csock, csin, recsize);
 	}
 }

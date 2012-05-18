@@ -1,3 +1,4 @@
+#include <regex.h>
 #include <strings.h>
 #include "stdmgmt.h"
 
@@ -61,4 +62,19 @@ void setOutputColor(int color) {
 
 void unsetOutputColor() {
 	fprintf(stdout, "\x1b[0m");
+}
+
+int8_t preg_match(char* str, char* rgx) {
+	int err;
+	regex_t preg;
+	err = regcomp (&preg, rgx, REG_NOSUB | REG_EXTENDED);
+	if (err == 0)
+	{
+		int match;
+		match = regexec (&preg, str, 0, NULL, 0);
+		regfree (&preg);
+		if (match == 0)
+			return 0;
+	}
+	return -1;
 }
