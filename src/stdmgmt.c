@@ -1,7 +1,8 @@
 #include "stdmgmt.h"
 
 void printSystem(const char* str, ...) {
-	char buffer[1024];
+	char* buffer;
+	buffer = (char*)malloc(1024*sizeof(char));
 	va_list ap;
 	
 	setOutputColor(COLOR_ORANGE);
@@ -18,7 +19,8 @@ void printSystem(const char* str, ...) {
 }
 
 void printDebug(const char* str, ...) {
-	char buffer[1024];
+	char* buffer;
+	buffer = (char*)malloc(1024*sizeof(char));
 	va_list ap;
 	
 	setOutputColor(COLOR_BLUE);
@@ -35,11 +37,12 @@ void printDebug(const char* str, ...) {
 }
 
 void printError(const char* str, ...) {
-	char buffer[1024];
+	char* buffer;
+	buffer = (char*)malloc(1024*sizeof(char));
 	va_list ap;
 	
 	setOutputColor(COLOR_RED);
-	
+
     va_start(ap, str);
     vsprintf(buffer, str, ap);
     fprintf(stdout,buffer);
