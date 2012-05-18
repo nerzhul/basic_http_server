@@ -16,7 +16,7 @@ void createCliThread(SOCKET csock, SOCKADDR_IN csin, socklen_t recsize) {
 	thr->next = NULL;
 	thr->thread = malloc(sizeof(pthread_t));
 	if(cursor == NULL) {
-		cursor = thr;
+		thrList4 = thr;
 	} else {
 		while(cursor->next != NULL)
 			cursor = cursor->next;
