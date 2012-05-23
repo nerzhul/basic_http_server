@@ -1,7 +1,6 @@
 #include "clientsocket.h"
 #include "serversocket.h"
 #include "stdmgmt.h"
-#include <dirent.h>
 
 int main(int argc, const char** argv) {
 	printSystem("Starting ESGI http-server (version %s)...",VERSION);
