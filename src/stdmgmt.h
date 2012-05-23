@@ -13,4 +13,5 @@ void printError(const char* str, ...);
 void setOutputColor(int color);
 void unsetOutputColor();
 int8_t preg_match(char* str, char* rgx);
+size_t preg_split(char* str, char* rgx,char** matches);
 #endif

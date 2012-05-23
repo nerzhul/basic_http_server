@@ -42,7 +42,7 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 uint16_t handleGetRequest(char* req, cSocket* sock) {
 	char filename[256];
 	bzero(filename,256);
-	
+	preg_split(req,"^GET[ ](.+)[ ]");
 	FILE* file = fopen(filename,"r");
 	if(file == NULL) {
 		forgeHeader(HTTP_ERROR_NOT_FOUND,sock,0);
