@@ -9,6 +9,8 @@
 #define HTTP_ERROR_SERVER_ERROR			500
 #define HTTP_ERROR_NOT_IMPLEMENTED		501
 
+#define MIN_CHAR_GET_REQ				6
+
 uint16_t handleRequest(char* req, cSocket* sock);
 uint16_t handleGetRequest(char* req, cSocket* sock);
 int8_t handlePostRequest(char* req);

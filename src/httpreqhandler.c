@@ -17,8 +17,11 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 		buffer[bufferoffset] = req[offset];
 		if(req[offset] == '\n' || req[offset] == '\0') {
 			buffer[bufferoffset] = '\0';
-			if(preg_match(buffer,"^GET[ ](.+)$") == 0)
-				return handleGetRequest(buffer,sock);
+			if(preg_match(buffer,"^GET[ ](.+)$") == 0) {
+				uint16_t retcode = handleGetRequest(buffer,sock);
+				forgeHeader(retcode,sock,10);
+				return retcode;
+			}
 			else if(preg_match(buffer,"^POST[ ](.+)$") == 0)
 				handlePostRequest(buffer);
 			else if(preg_match(buffer,"^PUT[ ](.+)$") == 0)
@@ -42,7 +45,21 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 uint16_t handleGetRequest(char* req, cSocket* sock) {
 	char filename[256];
 	bzero(filename,256);
-	preg_split(req,"^GET[ ](.+)[ ]");
+	
+	char** matches = malloc(1*sizeof(char*));
+	size_t reccount = preg_split(req,"(^GET[ ](.+)[ ])",matches);
+	
+	if(reccount > 1)
+		return HTTP_ERROR_SERVER_ERROR;
+
+	if(strlen(matches[0]) < MIN_CHAR_GET_REQ)
+		return HTTP_ERROR_SERVER_ERROR;
+	
+	if(matches[0][4] != '/')
+		return HTTP_ERROR_SERVER_ERROR;
+		
+	strncpy (filename, &(matches[0])[5], strlen(matches[0])-1);
+	printDebug("filename %s",filename);
 	FILE* file = fopen(filename,"r");
 	if(file == NULL) {
 		forgeHeader(HTTP_ERROR_NOT_FOUND,sock,0);
