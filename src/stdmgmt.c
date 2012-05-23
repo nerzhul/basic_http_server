@@ -56,6 +56,24 @@ void printError(const char* str, ...) {
 	fflush(stdout);
 }
 
+void printSuccess(const char* str, ...) {
+	char buffer[1024];
+	bzero(buffer,1024);
+	va_list ap;
+	
+	setOutputColor(COLOR_GREEN);
+	
+    va_start(ap, str);
+    vsprintf(buffer, str, ap);
+    fprintf(stdout,buffer);
+	va_end(ap);
+	
+	unsetOutputColor();
+	
+    fprintf(stdout, "\n");
+	fflush(stdout);
+}
+
 void setOutputColor(int color) {
     fprintf(stdout, "\x1b[%dm",color);
 }

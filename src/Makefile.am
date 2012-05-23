@@ -9,6 +9,8 @@ http_server_SOURCES = \
 	httpreqhandler.c \
 	httpreqhandler.h \
 	main.c \
+	options.c \
+	options.h \
 	prthread.c \
 	prthread.h \
 	serversocket.c \

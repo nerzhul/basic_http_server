@@ -1,4 +1,3 @@
-#include <string.h>
 #include "httpreqhandler.h"
 
 uint16_t handleRequest(char* req, cSocket* sock) {
