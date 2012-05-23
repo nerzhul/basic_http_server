@@ -59,7 +59,6 @@ uint16_t handleGetRequest(char* req, cSocket* sock) {
 		return HTTP_ERROR_SERVER_ERROR;
 		
 	strncpy (filename, &(matches[0])[5], strlen(matches[0])-1);
-	printDebug("filename %s",filename);
 	FILE* file = fopen(filename,"r");
 	if(file == NULL) {
 		forgeHeader(HTTP_ERROR_NOT_FOUND,sock,0);
@@ -109,8 +108,24 @@ void forgeHeader(uint16_t code, cSocket* sock, size_t clength) {
 			break;
 		}
 		case 500:
+			char tmpstr[128];
+			bzero(tmpstr,128);
+			strcpy(retcode,"HTTP/1.1 500 Internal Error\n");
+			strcat(retcode,"Server: esgi-http-server\n");
+			strcat(retcode,"Connection: Keep-Alive\n");
+			sprintf(tmpstr,"Content-Length: %d\n", strlen("<h1>Internal Server Error</h1>\n"));
+			strcat(retcode,"\n");
+			strcat(retcode,"<h1>Internal Server Error</h1>\n");
 			break;
 		case 501:
+			char tmpstr[128];
+			bzero(tmpstr,128);
+			strcpy(retcode,"HTTP/1.1 501 Not Implemented\n");
+			strcat(retcode,"Server: esgi-http-server\n");
+			strcat(retcode,"Connection: Keep-Alive\n");
+			sprintf(tmpstr,"Content-Length: %d\n", strlen("<h1>Not Implemented</h1>\n"));
+			strcat(retcode,"\n");
+			strcat(retcode,"<h1>Not Implemented</h1>\n");
 			break;
 		}
 	
