@@ -16,5 +16,5 @@ uint16_t handleGetRequest(char* req, cSocket* sock);
 int8_t handlePostRequest(char* req);
 int8_t handlePutRequest(char* req);
 
-void forgeHeader(uint16_t code, cSocket* sock, size_t clength);
+void forgeHeader(uint16_t code, cSocket* sock, char* content);
 #endif

@@ -1,4 +1,4 @@
-AC_INIT(http-server,0.3a,loic.blot@frostsapphirestudios.com)
+AC_INIT(http-server,0.3c,loic.blot@frostsapphirestudios.com)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC

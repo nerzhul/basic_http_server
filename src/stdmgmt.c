@@ -108,8 +108,6 @@ size_t preg_split(char* str, char* rgx,char** matches) {
 					strncpy (matches[0], &str[start], size);
 					matches[0][size] = '\0';
 				}
-				
-				printDebug("matches %s",matches[0]);
 				return 1;
 			}
 			
