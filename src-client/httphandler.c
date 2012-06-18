@@ -81,7 +81,7 @@ uint8_t getPage(char* host, char* header)
 		return 4;
 	}
 	
-	char buffer[102400] = ""; o
+	char buffer[102400] = "";
 	int byteRecv;
 	while((byteRecv = recv(sock, buffer, 102400, 0)) != 0)
 		printDebug("%s",buffer);
