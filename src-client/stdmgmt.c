@@ -3,8 +3,8 @@
 #include "stdmgmt.h"
 
 void printSystem(const char* str, ...) {
-	char buffer[1024];
-	bzero(buffer,1024);
+	char buffer[1024000];
+	bzero(buffer,1024000);
 	va_list ap;
 	
 	setOutputColor(COLOR_ORANGE);
@@ -21,8 +21,8 @@ void printSystem(const char* str, ...) {
 }
 
 void printDebug(const char* str, ...) {
-	char buffer[1024];
-	bzero(buffer,1024);
+	char buffer[1024000];
+	bzero(buffer,1024000);
 	va_list ap;
 	
 	setOutputColor(COLOR_BLUE);
@@ -39,8 +39,8 @@ void printDebug(const char* str, ...) {
 }
 
 void printError(const char* str, ...) {
-	char buffer[1024];
-	bzero(buffer,1024);
+	char buffer[1024000];
+	bzero(buffer,1024000);
 	va_list ap;
 	
 	setOutputColor(COLOR_RED);
@@ -57,8 +57,8 @@ void printError(const char* str, ...) {
 }
 
 void printSuccess(const char* str, ...) {
-	char buffer[1024];
-	bzero(buffer,1024);
+	char buffer[1024000];
+	bzero(buffer,1024000);
 	va_list ap;
 	
 	setOutputColor(COLOR_GREEN);
