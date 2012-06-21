@@ -22,7 +22,7 @@ uint8_t readExecOptions(int argc, char** argv) {
 					free(chroot_path);
 					chroot_path = malloc((strlen(argv[i])+1)*sizeof(char));
 					strcpy(chroot_path,argv[i]);
-					if(chroot_path[strlen(chroot_path)] != '/')
+					if(chroot_path[strlen(chroot_path)-1] != '/')
 						strcat(chroot_path,"/");
 					cur_read_opt = '\0';
 				}

@@ -83,12 +83,11 @@ uint16_t handleGetRequest(char* req, cSocket* sock) {
 	} while(rchar != EOF);
 	
 	// come back to the first offset
-	fileoffset = 0;
 	rewind(file);
 	
 	// allocate the right memory size (optimize memory)
 	char* content = malloc((fileoffset+1)*sizeof(char));
-	
+	fileoffset = 0;
 	// copy file to content buffer
 	do {
 		rchar = fgetc(file);
