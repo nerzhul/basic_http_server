@@ -24,7 +24,7 @@ int main(int argc, const char** argv) {
 	}
 	
 	// Socket System
-	printSystem("\033[A[LOADING] Network init");
+	printSystem("[LOADING] Network initialization");
 	if(initServerSocket() != 0) {
 		printError("[FATAL] Unable to init socket on port %d",HTTP_PORT);
 		return -1;
@@ -35,7 +35,7 @@ int main(int argc, const char** argv) {
 		return -1;
 	}
 
-	printSuccess("\033[A[SUCCESS] ESGI http-server is now ready !");
+	printSuccess("[SUCCESS] ESGI http-server is now ready !");
 	
 	initThreadlist();
 	handleClients();

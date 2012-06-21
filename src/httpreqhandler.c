@@ -1,4 +1,5 @@
 #include "httpreqhandler.h"
+#include "options.h"
 
 uint16_t handleRequest(char* req, cSocket* sock) {
 	if(req == NULL || sock == NULL)
@@ -42,8 +43,7 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 }
 
 uint16_t handleGetRequest(char* req, cSocket* sock) {
-	char filename[1024];
-	bzero(filename,1024);
+	char* filename = NULL;
 	
 	char** matches = malloc(1*sizeof(char*));
 	size_t reccount = preg_split(req,"(^GET[ ](.+)[ ])",matches);
@@ -57,18 +57,21 @@ uint16_t handleGetRequest(char* req, cSocket* sock) {
 	if(matches[0][4] != '/')
 		return HTTP_ERROR_SERVER_ERROR;
 	
-	// little hack
-	filename[0] = '.';
-	strncpy(&filename[1], &(matches[0])[4], strlen(matches[0])-5);
-	FILE* file = fopen(filename,"r+");
-	if(file == NULL) {
-		forgeHeader(HTTP_ERROR_NOT_FOUND,sock,"");
-		return HTTP_ERROR_NOT_FOUND;
-	}
+	filename = (char*)malloc((strlen(chroot_path)+strlen(matches[0])-6+1)*sizeof(char));
+	strcpy(filename,chroot_path);
+	strncat(filename, &(matches[0])[5], strlen(matches[0])-6);
+	strcat(filename,"\0");
 	
 	// free useless var from memory
 	free(matches[0]);
 	free(matches);
+	
+	FILE* file = fopen(filename,"r+");
+	if(file == NULL) {
+		forgeHeader(HTTP_ERROR_NOT_FOUND,sock,"");
+		free(filename);
+		return HTTP_ERROR_NOT_FOUND;
+	}
 	
 	char rchar;
 	uint64_t fileoffset = 0;
@@ -99,6 +102,8 @@ uint16_t handleGetRequest(char* req, cSocket* sock) {
 	forgeHeader(HTTP_OK,sock,content);
 	// proper close & memory free
 	fclose(file);
+	
+	free(filename);
 	//free(content); // memory bug for now :s
 	return HTTP_OK;
 }

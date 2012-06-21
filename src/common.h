@@ -6,5 +6,8 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include <string.h>
+// For directories
+#include <sys/types.h>
+#include <dirent.h>
 
 #endif

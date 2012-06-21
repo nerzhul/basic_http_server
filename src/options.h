@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+char cur_read_opt;
 uint8_t daemonize;
 char* chroot_path;
 
