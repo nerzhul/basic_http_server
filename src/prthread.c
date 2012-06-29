@@ -7,6 +7,7 @@ void initThreadlist() {
 }
 
 void createCliThread(SOCKET csock, SOCKADDR_IN csin, socklen_t recsize) {
+	// Create a client thread
 	prThread* cursor = thrList4;
 	prThread* thr = (prThread*)malloc(sizeof(prThread));
 	cSocket* sock = (prThread*)malloc(sizeof(cSocket));
@@ -17,6 +18,8 @@ void createCliThread(SOCKET csock, SOCKADDR_IN csin, socklen_t recsize) {
 	thr->sock = sock;
 	thr->next = NULL;
 	thr->thread = malloc(sizeof(pthread_t));
+	
+	// register thread in chained list
 	if(cursor == NULL) {
 		thrList4 = thr;
 	} else {
@@ -24,6 +27,8 @@ void createCliThread(SOCKET csock, SOCKADDR_IN csin, socklen_t recsize) {
 			cursor = cursor->next;
 		cursor->next = thr;
 	}
+	
+	// create a thread for this client
 	pthread_create(thr->thread, NULL, clientHandler, (void*)thr);
 }
 
@@ -33,7 +38,8 @@ void destroyCliThread(prThread* thr) {
 	
 	if(thr->sock != NULL)
 		free(thr->sock);
-		
+	
+	// remove from chained list
 	prThread* cursor = thrList4;
 	if(cursor == thr) {
 		thrList4 = cursor->next;

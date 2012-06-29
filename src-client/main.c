@@ -11,6 +11,7 @@ int main(int argc, const char** argv)
 		return 1;
 	}
 	
+	// Send URL to URL handler
 	handleURL(argv[1]);
 	
 	return 0;

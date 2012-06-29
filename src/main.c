@@ -6,6 +6,7 @@
 int main(int argc, const char** argv) {
 	printSystem("Starting ESGI http-server (version %s)...",VERSION);
 	
+	// first: read options
 	// Option system
 	printSystem("[LOADING] Configuration...");
 	initExecOptions();
@@ -29,6 +30,8 @@ int main(int argc, const char** argv) {
 		printError("[FATAL] Unable to init socket on port %d",HTTP_PORT);
 		return -1;
 	}
+	
+	// Listening to the socket
 	printSystem("\033[A[LOADING] Listening");
 	if(ssocketListen() != 0) {
 		printError("[FATAL] Unable to listen on port %d",HTTP_PORT);
@@ -37,8 +40,13 @@ int main(int argc, const char** argv) {
 
 	printSuccess("[SUCCESS] ESGI http-server is now ready !");
 	
+	// Init threadlist
 	initThreadlist();
+	
+	// Manage sockets
 	handleClients();
+	
+	// End the system
 	printSystem("Shutting down ESGI http-server...");
 	ssocketClose();
 	printSystem("Bye.");

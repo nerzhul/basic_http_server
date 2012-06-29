@@ -4,7 +4,10 @@
 
 void handleURL(const char* url)
 {
+	// check if URL is valid
 	uint8_t err = checkURLValidity(url);
+	
+	// handle error codes
 	if(err > 0)
 	{
 		switch(err)
@@ -17,11 +20,13 @@ void handleURL(const char* url)
 		return;
 	}
 	
+	// Init buffers for host & path
 	char hostbuffer[256];
 	bzero(hostbuffer,256);
 	char pathbuffer[1024];
 	bzero(pathbuffer,1024);
 
+	// Copy hostname to buffer
 	uint16_t i;
 	for(i=7;i<strlen(url);i++)
 	{
@@ -30,6 +35,7 @@ void handleURL(const char* url)
 		hostbuffer[i-7] = url[i];
 	}
 	
+	// Copy relative path to buffer
 	uint16_t offset = i;
 	for(;i<strlen(url);i++)
 		pathbuffer[i-offset] = url[i];
@@ -37,11 +43,13 @@ void handleURL(const char* url)
 	if(strcmp(pathbuffer,"") == 0)
 		strcat(pathbuffer,"/");
 	
-	char httpheader[10240];
-	bzero(httpheader,10240);
+	char httpresp[10240];
+	bzero(httpresp,10240);
 	
-	generateHTTPHeader(httpheader,1,hostbuffer,pathbuffer);
-	getPage(hostbuffer,httpheader);
+	// create HTTP header
+	generateHTTPHeader(httpresp,1,hostbuffer,pathbuffer);
+	// request page content
+	getPage(hostbuffer,httpresp);
 }
 
 uint8_t getPage(char* host, char* header)
@@ -52,10 +60,12 @@ uint8_t getPage(char* host, char* header)
 		return 1;
 	}
 	
+	// Init socket
 	struct addrinfo *result;
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
 	SOCKADDR_IN sin;
 	
+	// resolve dns query
 	int err = getaddrinfo(host, NULL, NULL,&result);
 	if(err != 0 || result == NULL)
 	{
@@ -65,6 +75,7 @@ uint8_t getPage(char* host, char* header)
 	sin.sin_family         = AF_INET;
 	sin.sin_port           = htons(80);
 	
+	// init and connect socket
 	sin.sin_addr.s_addr = ((struct sockaddr_in *)(result->ai_addr))->sin_addr.s_addr;
 	err = connect(sock, (SOCKADDR*)&sin, sizeof(sin));
 
@@ -81,9 +92,10 @@ uint8_t getPage(char* host, char* header)
 		return 4;
 	}
 	
-	char buffer[102400] = "";
+	// read socket
+	char buffer[1024000] = "";
 	int byteRecv;
-	while((byteRecv = recv(sock, buffer, 102400, 0)) != 0)
+	while((byteRecv = recv(sock, buffer, 1024000, 0)) != 0)
 		printDebug("%s",buffer);
 	
 	printSuccess("Yeah !");

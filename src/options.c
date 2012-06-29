@@ -8,6 +8,7 @@ void initExecOptions() {
 }
 
 uint8_t readExecOptions(int argc, char** argv) {
+	// read all options
 	int i;
 	for(i=1;i<argc;i++) {
 		// -D option daemonize the process
