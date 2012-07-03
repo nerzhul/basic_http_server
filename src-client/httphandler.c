@@ -103,8 +103,6 @@ uint8_t getPage(char* host, char* header)
 	}
 	while(byteRecv != 0);
 	
-	printSuccess("Yeah !");
-	
 	close(sock);
 }
 
