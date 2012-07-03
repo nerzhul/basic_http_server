@@ -134,7 +134,7 @@ uint8_t generateHTTPHeader(char* httpheader, uint8_t type, char* host, char* pat
 
 uint8_t checkURLValidity(const char* url)
 {
-	if(strlen(url) < 8)
+	if(strlen(url) < 10)
 		return 1;
 		
 	char buffer[8];
