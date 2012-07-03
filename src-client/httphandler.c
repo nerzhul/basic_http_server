@@ -96,10 +96,12 @@ uint8_t getPage(char* host, char* header)
 	char buffer[1024000];
 	bzero(buffer,1024000);
 	int byteRecv;
-	while((byteRecv = recv(sock, buffer, 1024000, 0)) != 0) {
+	do {
+		byteRecv = recv(sock, buffer, 1024000, 0);
 		printDebug("%s",buffer);
 		bzero(buffer,1024000);
 	}
+	while(byteRecv != 0);
 	
 	printSuccess("Yeah !");
 	
