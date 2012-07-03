@@ -93,10 +93,13 @@ uint8_t getPage(char* host, char* header)
 	}
 	
 	// read socket
-	char buffer[1024000] = "";
+	char buffer[1024000];
+	bzero(buffer,1024000);
 	int byteRecv;
-	while((byteRecv = recv(sock, buffer, 1024000, 0)) != 0)
+	while((byteRecv = recv(sock, buffer, 1024000, 0)) != 0) {
 		printDebug("%s",buffer);
+		bzero(buffer,1024000);
+	}
 	
 	printSuccess("Yeah !");
 	

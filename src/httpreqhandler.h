@@ -13,8 +13,8 @@
 
 uint16_t handleRequest(char* req, cSocket* sock);
 uint16_t handleGetRequest(char* req, cSocket* sock);
-int8_t handlePostRequest(char* req);
-int8_t handlePutRequest(char* req);
+int8_t handlePostRequest(char* req, cSocket* sock);
+int8_t handlePutRequest(char* req, cSocket* sock);
 
 void forgeHeader(uint16_t code, cSocket* sock, char* content);
 #endif

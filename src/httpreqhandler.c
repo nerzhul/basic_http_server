@@ -28,12 +28,12 @@ uint16_t handleRequest(char* req, cSocket* sock) {
 				return retcode;
 			}
 			else if(preg_match(buffer,"^POST[ ](.+)$") == 0) {
-				handlePostRequest(buffer);
+				uint16_t retcode = handlePostRequest(buffer,sock);
 				if(retcode != HTTP_OK) forgeHeader(retcode,sock,"");
 				return retcode;
 			}
 			else if(preg_match(buffer,"^PUT[ ](.+)$") == 0) {
-				handlePutRequest(buffer);
+				uint16_t retcode = handlePutRequest(buffer,sock);
 				if(retcode != HTTP_OK) forgeHeader(retcode,sock,"");
 				return retcode;
 			}
@@ -118,7 +118,7 @@ uint16_t handleGetRequest(char* req, cSocket* sock) {
 	return HTTP_OK;
 }
 
-int8_t handlePostRequest(char* req) {
+int8_t handlePostRequest(char* req, cSocket* sock) {
 	char* filename = NULL;
 	
 	char** matches = malloc(1*sizeof(char*));
@@ -183,7 +183,7 @@ int8_t handlePostRequest(char* req) {
 	return HTTP_OK;
 }
 
-int8_t handlePutRequest(char* req) {
+int8_t handlePutRequest(char* req, cSocket* sock) {
 	char* filename = NULL;
 	
 	char** matches = malloc(1*sizeof(char*));

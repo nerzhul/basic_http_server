@@ -7,11 +7,14 @@ void* clientHandler(void* data) {
 	uint8_t forceclose = 0;
 	ssize_t byteRecv;
 	
+	// While socket is valid and we don't force close
 	while(thr->sock->csock != INVALID_SOCKET && forceclose == 0) {
+		// put recv datas into a 10ko buffer
 		char buffer[10240] = "";
 		byteRecv = recv(thr->sock->csock, buffer, 10240, 0);
+		// if no socket error
 		if(byteRecv != SOCKET_ERROR && byteRecv != 0) {
-			if(strlen(buffer) > 0 ) {
+			if(strlen(buffer) > 0) {
 				printDebug("%s",buffer);
 				uint16_t err = handleRequest(buffer,thr->sock);
 				if(err > 400)

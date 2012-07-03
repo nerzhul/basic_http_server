@@ -6,7 +6,7 @@
 int main(int argc, const char** argv) {
 	printSystem("Starting ESGI http-server (version %s)...",VERSION);
 	
-	// first: read options
+	// first: read arguments
 	// Option system
 	printSystem("[LOADING] Configuration...");
 	initExecOptions();
@@ -18,8 +18,10 @@ int main(int argc, const char** argv) {
 	// if -D option is positionned, we daemonize 
 	if(daemonize != 0) {
 		pid_t pid = fork();
-		if(pid < 0)
+		if(pid < 0) {
 			printError("[FATAL] Forking fatal error !");
+			return 1;
+		}
 		else if(pid > 0)
 			return 0;		
 	}

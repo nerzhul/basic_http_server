@@ -32,7 +32,7 @@ int8_t ssocketListen() {
 }
 
 int8_t handleClients() {
-	
+
 	// infinite loop for listening
 	while(1) {
 		SOCKET csock;
