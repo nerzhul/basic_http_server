@@ -43,13 +43,13 @@ void handleURL(const char* url)
 	if(strcmp(pathbuffer,"") == 0)
 		strcat(pathbuffer,"/");
 	
-	char httpresp[10240];
-	bzero(httpresp,10240);
+	char httpreq[10240];
+	bzero(httpreq,10240);
 	
 	// create HTTP header
-	generateHTTPHeader(httpresp,1,hostbuffer,pathbuffer);
+	generateHTTPHeader(httpreq,1,hostbuffer,pathbuffer);
 	// request page content
-	getPage(hostbuffer,httpresp);
+	getPage(hostbuffer,httpreq);
 }
 
 uint8_t getPage(char* host, char* header)
